@@ -107,7 +107,7 @@ docker-compose stop
    - Zero Trust → Networks → Tunnels
    - 「Create a tunnel」をクリック
    - 「Cloudflared」を選択
-   - トンネル名を入力（例: `portfolio-tunnel`）
+   - トンネル名を入力（例: `home-lab`）
 
 2. **トンネルのインストールと設定**
 
