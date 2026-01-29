@@ -1,0 +1,24 @@
+# Environment variables
+.env
+.env.local
+
+# Docker volumes
+docker-volumes/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Umami database (if mounted locally)
+umami-data/
