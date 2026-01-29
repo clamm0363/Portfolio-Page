@@ -8,8 +8,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # ディレクトリマウントのみ（ファイルマウント問題を回避）
-      - ./:/usr/share/nginx/html:ro
+      # 必要なディレクトリのみマウント（Portainerのファイルマウント問題を回避）
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./assets:/usr/share/nginx/html/assets:ro
     depends_on:
       - umami
     networks:
