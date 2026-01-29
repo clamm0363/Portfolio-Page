@@ -2,15 +2,13 @@ version: '3.8'
 
 services:
   nginx:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     container_name: portfolio-nginx
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      # 必要なディレクトリのみマウント（Portainerのファイルマウント問題を回避）
-      - ./index.html:/usr/share/nginx/html/index.html:ro
-      - ./assets:/usr/share/nginx/html/assets:ro
     depends_on:
       - umami
     networks:
