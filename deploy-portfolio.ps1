@@ -57,6 +57,12 @@ if ($PSVersionTable.PSVersion.Major -lt 7) {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 }
 
+# プロキシ設定をバイパス
+[System.Net.WebRequest]::DefaultWebProxy = $null
+if (Get-Command Set-ProxySettings -ErrorAction SilentlyContinue) {
+    $null = Set-ProxySettings -Proxy $null
+}
+
 # ヘッダー設定
 $headers = @{
     "X-API-Key" = $ApiToken
@@ -68,9 +74,9 @@ try {
     # 1. エンドポイントIDを取得
     Write-Info "Fetching endpoint ID..."
     if ($PSVersionTable.PSVersion.Major -ge 7) {
-        $endpoints = Invoke-RestMethod -Uri "$PortainerUrl/api/endpoints" -Headers $headers -SkipCertificateCheck
+        $endpoints = Invoke-RestMethod -Uri "$PortainerUrl/api/endpoints" -Headers $headers -SkipCertificateCheck -NoProxy
     } else {
-        $endpoints = Invoke-RestMethod -Uri "$PortainerUrl/api/endpoints" -Headers $headers
+        $endpoints = Invoke-RestMethod -Uri "$PortainerUrl/api/endpoints" -Headers $headers -Proxy $null
     }
     
     $endpointId = $endpoints[0].Id
@@ -79,9 +85,9 @@ try {
     # 2. 既存のスタックを確認
     Write-Info "Checking for existing stacks..."
     if ($PSVersionTable.PSVersion.Major -ge 7) {
-        $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers -SkipCertificateCheck
+        $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers -SkipCertificateCheck -NoProxy
     } else {
-        $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers
+        $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers -Proxy $null
     }
     
     $existingStack = $stacks | Where-Object { $_.Name -eq $StackName }
@@ -89,9 +95,9 @@ try {
     if ($existingStack) {
         Write-Info "Stack '$StackName' already exists. Deleting..."
         if ($PSVersionTable.PSVersion.Major -ge 7) {
-            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers -SkipCertificateCheck | Out-Null
+            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers -SkipCertificateCheck -NoProxy | Out-Null
         } else {
-            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers | Out-Null
+            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers -Proxy $null | Out-Null
         }
         Write-Success "Existing stack deleted"
         Start-Sleep -Seconds 5
@@ -140,14 +146,16 @@ try {
             -Headers $headers `
             -ContentType "application/json" `
             -Body $body `
-            -SkipCertificateCheck
+            -SkipCertificateCheck `
+            -NoProxy
     } else {
         $response = Invoke-RestMethod `
             -Uri "$PortainerUrl/api/stacks?type=2&method=repository&endpointId=$endpointId" `
             -Method Post `
             -Headers $headers `
             -ContentType "application/json" `
-            -Body $body
+            -Body $body `
+            -Proxy $null
     }
 
     Write-Success "Stack created successfully!"
