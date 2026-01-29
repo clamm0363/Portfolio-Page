@@ -74,30 +74,24 @@ docker-compose down
 docker-compose stop
 ```
 
-## デプロイ手順
+## デプロイ
 
-### Dockerホスト（192.168.0.94）へのデプロイ
+### Portainerでのデプロイ（推奨）
 
-1. **プロジェクトファイルの転送**
+Portainerを使用した本番デプロイの詳細な手順は、[DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
 
-   ```bash
-   # SCPやrsyncなどでファイルを転送
-   scp -r . user@192.168.0.94:/root/portfolio/
-   ```
+### Docker Composeでのデプロイ
 
-2. **Dockerホストでの起動**
+標準的なDocker環境でのデプロイ：
 
-   ```bash
-   ssh user@192.168.0.94
-   cd /root/portfolio
-   cp .env.example .env
-   # .envファイルを編集
-   docker-compose up -d
-   ```
+```bash
+# 環境変数の設定
+cp .env.example .env
+# .envファイルを編集してパスワードを設定
 
-3. **内部ネットワークでの確認**
-
-   `http://192.168.0.94` でアクセスできることを確認してください。
+# デプロイ
+docker-compose up -d
+```
 
 ### Cloudflare Tunnel設定
 

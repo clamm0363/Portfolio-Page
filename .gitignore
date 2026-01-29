@@ -31,7 +31,7 @@ umami-data/
 CLOUDFLARE_*.md
 PORTAINER_*.md
 UMAMI_*.md
-DEPLOYMENT_*.md
+DEPLOYMENT_COMPLETE.md
 QUICK_START.md
 commit-push-and-deploy.ps1
 deploy-portfolio.ps1
