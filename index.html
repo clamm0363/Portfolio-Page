@@ -1,397 +1,808 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Masaru Funahashi - ゲーム翻訳者のポートフォリオ">
     <title>Masaru Funahashi | Game Translator Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
+                fontFamily: {
+                    sans: ['"Inter"', '"Noto Sans JP"', 'sans-serif'],
+                },
                 extend: {
                     colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
+                        primary: '#0f172a', // Slate 900
+                        secondary: '#334155', // Slate 700
+                        accent: '#2563eb',   // Blue 600
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                     }
                 }
             }
         }
     </script>
+    <style>
+        .glass-header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+        }
+
+        .card-interaction {
+            transition: all 0.3s ease;
+        }
+
+        .card-interaction:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Blob Animation for Hero */
+        @keyframes blob-bounce {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .animate-blob {
+            animation: blob-bounce 10s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        /* Masonry Grid Fixes */
+        .break-inside-avoid {
+            break-inside: avoid;
+        }
+    </style>
     <!-- Umami Analytics -->
-    <script defer src="https://analytics.clamm-translation.net/script.js" data-website-id="f3d0545f-28a0-4199-ad16-00b6deb19710"></script>
+    <script defer src="https://analytics.clamm-translation.net/script.js"
+        data-website-id="f3d0545f-28a0-4199-ad16-00b6deb19710"></script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-accent selection:text-white">
     <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold text-gray-900 mb-2">Masaru Funahashi</h1>
-                <p class="text-xl text-gray-600">Game Translator | EtoJ</p>
-                <p class="text-gray-500 mt-2">プロフェッショナルゲーム翻訳者</p>
+    <header class="fixed w-full top-0 z-50 glass-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-tight">Masaru Funahashi</h1>
+                <p class="text-xs text-slate-400 tracking-wide uppercase">English to Japanese Game Translator</p>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Introduction Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-2xl font-bold mb-4">About</h2>
-                <p class="text-gray-700 leading-relaxed">
-                    ゲーム翻訳者として、2020年より多数のタイトルのローカライゼーションに携わってきました。
-                    インディーゲームからAAAタイトルまで、幅広いジャンルのゲーム翻訳を手がけています。
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <!-- Introduction Section (Hero) -->
+        <section id="about" class="mb-24 relative max-w-4xl mx-auto text-center overflow-visible">
+            <!-- Animated Background Blobs -->
+            <div
+                class="absolute top-0 -left-4 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob">
+            </div>
+            <div
+                class="absolute top-0 -right-4 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+            </div>
+            <div
+                class="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+            </div>
+
+            <div class="relative z-10 fade-in py-16">
+                <!-- English Headline -->
+                <h2
+                    class="text-5xl sm:text-7xl font-extrabold text-white mb-8 tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                    Localization by Gamers,<br>
+                    <span class="text-accent">for Gamers.</span>
+                </h2>
+
+                <!-- Japanese Subhead -->
+                <p class="text-xl sm:text-2xl text-slate-300 leading-relaxed font-medium">
+                    ゲーマーだからこそ、わかる機微がある。<br>
+                    作品の世界観に「没入」させる翻訳を。
                 </p>
             </div>
         </section>
 
-        <!-- Works Section -->
-        <section class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center">Works</h2>
-            
-            <!-- 2024 -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-blue-500 pb-2">2024</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dicefolk -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1996430/Dicefolk/" target="_blank" class="text-blue-600 hover:text-blue-800">Dicefolk</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> LEAP Game Studios, Tiny Ghoul</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Good Shepherd Entertainment</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> February 27, 2024</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 72,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
+        <!-- Works Section (Masonry) -->
+        <section id="works" class="mb-24">
+            <h3
+                class="text-xl font-bold text-white mb-8 border-l-4 border-accent pl-4 flex items-center justify-between">
+                <span>Works</span>
+                <span class="text-sm font-normal text-slate-400">Selected Projects</span>
+            </h3>
 
-                    <!-- Block Rancher (Demo) -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/2877940/Block_Rancher/" target="_blank" class="text-blue-600 hover:text-blue-800">Block Rancher (Demo)</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> HandCircus</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HandCircus</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> July 19, 2024 (Demo version, at Bit Summit)</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 1,200</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
+            <!-- Grid Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                    <!-- Elixir -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/2193570/Elixir/" target="_blank" class="text-blue-600 hover:text-blue-800">Elixir</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Moxu Projects</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Moxu Projects</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> July 30, 2024</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 8,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
+                <!-- Stoneshard (Featured) -->
+                <div
+                    class="md:col-span-2 bg-slate-900 rounded-xl shadow-md p-6 border-2 border-slate-700/50 card-interaction h-full flex flex-col relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl-lg z-10">
+                        Featured Work
                     </div>
-
-                    <!-- Robot's Fate: Alice (Demo) -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/3091030/Robots_Fate_Alice/" target="_blank" class="text-blue-600 hover:text-blue-800">Robot's Fate: Alice (Demo)</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Starni Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Starni Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> November 10, 2024</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 19,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
+                    <a href="https://store.steampowered.com/app/625960/Stoneshard/" target="_blank"
+                        class="block mb-6 overflow-hidden rounded-lg group grow-0">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/625960/header.jpg"
+                            alt="Stoneshard Banner"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2020</span>
+                        <span class="text-xs text-slate-400 font-medium tracking-wide">FULL SCOPE LOC</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-3 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/625960/Stoneshard/" target="_blank"
+                            class="hover:text-accent transition-colors">Stoneshard</a>
+                    </h4>
+                    <p class="text-base text-slate-400 mb-4 font-medium">RPG / Roguelite</p>
+                    <div class="space-y-2 text-sm text-slate-400 mt-auto">
+                        <p><strong>Dev:</strong> Ink Stains Games</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-3 pt-3 border-t border-slate-800 font-mono">Word Count:
+                            200,000+ (Ongoing)</p>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2023 -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-blue-500 pb-2">2023</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Total Tank Generals -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1770050/Total_Tank_Generals/" target="_blank" class="text-blue-600 hover:text-blue-800">Total Tank Generals</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Noobz From Poland</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> 505 Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> March 20, 2023</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 29,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
+                <!-- Dicefolk (2024) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1996430/Dicefolk/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1996430/header.jpg"
+                            alt="Dicefolk Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2024</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
                     </div>
-
-                    <!-- Black Book -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1138660/Black_Book/" target="_blank" class="text-blue-600 hover:text-blue-800">Black Book</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Morteshka</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> August 11, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Localized Date:</strong> August 23, 2023</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 430,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- dotAGE -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/638510/dotAGE/" target="_blank" class="text-blue-600 hover:text-blue-800">dotAGE</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Michele Pirovano</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Michele Pirovano</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> October 4, 2023</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 80,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- King of the Hat -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/837350/King_of_the_Hat/" target="_blank" class="text-blue-600 hover:text-blue-800">King of the Hat</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Hat Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Hat Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> August 25, 2023</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 16,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- KarmaZoo -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1661630/KarmaZoo/" target="_blank" class="text-blue-600 hover:text-blue-800">KarmaZoo</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Pastagames</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Devolver Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> November 15, 2023</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 49,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1996430/Dicefolk/" target="_blank"
+                            class="hover:text-accent transition-colors">Dicefolk</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Roguelite / Strategy</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> LEAP Game Studios, Tiny Ghoul</p>
+                        <p><strong>Pub:</strong> Good Shepherd Entertainment</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            72,000
+                        </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2022 -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-blue-500 pb-2">2022</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Shredders -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1874170/Shredders/" target="_blank" class="text-blue-600 hover:text-blue-800">Shredders</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> FoamPunch</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> FoamPunch</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> March 17, 2022</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 24,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Editing</p>
+                <!-- Block Rancher (2024) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/2877940/Block_Rancher/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/2877940/header.jpg"
+                            alt="Block Rancher Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2024</span>
+                        <span class="text-xs text-slate-400">Demo</span>
                     </div>
-
-                    <!-- Jack Move -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1099640/Jack_Move/" target="_blank" class="text-blue-600 hover:text-blue-800">Jack Move</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> So Romantic</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> September 9, 2022</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 30,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- RAILGRADE -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1355090/RAILGRADE/" target="_blank" class="text-blue-600 hover:text-blue-800">RAILGRADE</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Minakata Dynamics</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Epic Games Publishing</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> September 29, 2022</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 16,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- Ukraine War Stories -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1985510/Ukraine_War_Stories/" target="_blank" class="text-blue-600 hover:text-blue-800">Ukraine War Stories</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Starni Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Starni Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> October 18, 2022</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 26,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Fan Translation (Charity)</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Editing</p>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/2877940/Block_Rancher/" target="_blank"
+                            class="hover:text-accent transition-colors">Block Rancher</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Simulation</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> HandCircus</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            1,200
+                        </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2021 -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-blue-500 pb-2">2021</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Breathedge -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/738520/Breathedge/" target="_blank" class="text-blue-600 hover:text-blue-800">Breathedge</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> RedRuins Softworks</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital, RedRuins Softworks</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> February 26, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 72,000*</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work*</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Role:</strong> Full Scope*</p>
-                        <p class="text-xs text-gray-500 italic">*w/o DLCs</p>
+                <!-- Elixir (2024) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/2193570/Elixir/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/2193570/header.jpg" alt="Elixir Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2024</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
                     </div>
-
-                    <!-- Tails Noir -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/865610/Tails_Noir/" target="_blank" class="text-blue-600 hover:text-blue-800">Tails Noir</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Eggnut</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Raw Fury</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> June 8, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 31,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Subcontracted Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Translation / LQA</p>
-                    </div>
-
-                    <!-- Ratchet & Clank: Rift Apart -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1895880/_/" target="_blank" class="text-blue-600 hover:text-blue-800">Ratchet & Clank: Rift Apart</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Insomniac Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Sony Interactive Entertainment</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> June 11, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 8,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Subcontracted Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Translation (stage directions)</p>
-                    </div>
-
-                    <!-- SuchArt: Genius Artist Simulator -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1293180/SuchArt/" target="_blank" class="text-blue-600 hover:text-blue-800">SuchArt: Genius Artist Simulator</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Goose Minded</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> July 15, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 28,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- Midnight Protocol -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1162700/Midnight_Protocol/" target="_blank" class="text-blue-600 hover:text-blue-800">Midnight Protocol</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> LuGus Studios</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Iceberg Interactive</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> October 14, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 69,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Fan Translation</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- Tunche -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/887450/Tunche/" target="_blank" class="text-blue-600 hover:text-blue-800">Tunche</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> LEAP Game Studios</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> November 2, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 20,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
-                    </div>
-
-                    <!-- Grow: Song of the Evertree -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1380420/Grow_Song_of_the_Evertree/" target="_blank" class="text-blue-600 hover:text-blue-800">Grow: Song of the Evertree</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Prideful Sloth</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> 505 Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> November 16, 2021</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 23,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Subcontracted Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Translation</p>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/2193570/Elixir/" target="_blank"
+                            class="hover:text-accent transition-colors">Elixir</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Strategy</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Moxu Projects</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            8,000
+                        </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- 2020 -->
-            <div class="mb-12">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800 border-b-2 border-blue-500 pb-2">2020</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Stoneshard -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/625960/Stoneshard/" target="_blank" class="text-blue-600 hover:text-blue-800">Stoneshard</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Ink Stains Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> HypeTrain Digital</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> February 7, 2020</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 200,000+</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Individual Work</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Full Scope</p>
+                <!-- Robot's Fate: Alice (2024) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/3091030/Robots_Fate_Alice/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/3091030/header.jpg"
+                            alt="Robot's Fate: Alice Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2024</span>
+                        <span class="text-xs text-slate-400">Demo</span>
                     </div>
-
-                    <!-- Partisans 1941 -->
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
-                        <h4 class="text-xl font-bold mb-3">
-                            <a href="https://store.steampowered.com/app/1227530/1941__Partisans_1941/" target="_blank" class="text-blue-600 hover:text-blue-800">Partisans 1941</a>
-                        </h4>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Developer:</strong> Alter Games</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Publisher:</strong> Daedalic Entertainment</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Release Date:</strong> October 14, 2020</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Word Count:</strong> 20,000</p>
-                        <p class="text-sm text-gray-600 mb-2"><strong>Project Type:</strong> Collaborative Project</p>
-                        <p class="text-sm text-gray-600"><strong>Role:</strong> Translation</p>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/3091030/Robots_Fate_Alice/" target="_blank"
+                            class="hover:text-accent transition-colors">Robot's Fate: Alice</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Visual Novel</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Starni Games</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            19,000
+                        </p>
                     </div>
                 </div>
+
+                <!-- dotAGE (2023) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/638510/dotAGE/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/638510/header.jpg" alt="dotAGE Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2023</span>
+                        <span class="text-xs text-slate-400">Collab</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/638510/dotAGE/" target="_blank"
+                            class="hover:text-accent transition-colors">dotAGE</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Strategy / Roguelite</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Michele Pirovano</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            80,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- KarmaZoo (2023) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1661630/KarmaZoo/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1661630/header.jpg"
+                            alt="KarmaZoo Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2023</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1661630/KarmaZoo/" target="_blank"
+                            class="hover:text-accent transition-colors">KarmaZoo</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Co-op Platformer</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Pastagames</p>
+                        <p><strong>Pub:</strong> Devolver Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            49,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Total Tank Generals (2023) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1770050/Total_Tank_Generals/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1770050/header.jpg"
+                            alt="Total Tank Generals Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2023</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1770050/Total_Tank_Generals/" target="_blank"
+                            class="hover:text-accent transition-colors">Total Tank Generals</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Strategy</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Noobz From Poland</p>
+                        <p><strong>Pub:</strong> 505 Games</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            29,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- King of the Hat (2023) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/837350/King_of_the_Hat/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/837350/header.jpg"
+                            alt="King of the Hat Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2023</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/837350/King_of_the_Hat/" target="_blank"
+                            class="hover:text-accent transition-colors">King of the Hat</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Party Game</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Hat Games</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            16,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Black Book (2023) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1138660/Black_Book/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1138660/header.jpg"
+                            alt="Black Book Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2023</span>
+                        <span class="text-xs text-slate-400">Collab</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1138660/Black_Book/" target="_blank"
+                            class="hover:text-accent transition-colors">Black Book</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">RPG</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Morteshka</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            430,000</p>
+                    </div>
+                </div>
+
+                <!-- RAILGRADE (2022) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1355090/RAILGRADE/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1355090/header.jpg"
+                            alt="RAILGRADE Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2022</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1355090/RAILGRADE/" target="_blank"
+                            class="hover:text-accent transition-colors">RAILGRADE</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Management / Strategy</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Minakata Dynamics</p>
+                        <p><strong>Pub:</strong> Epic Games Publishing</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            16,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Jack Move (2022) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1099640/Jack_Move/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1099640/header.jpg"
+                            alt="Jack Move Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2022</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1099640/Jack_Move/" target="_blank"
+                            class="hover:text-accent transition-colors">Jack Move</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">RPG</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> So Romantic</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            30,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Shredders (2022) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1874170/Shredders/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1874170/header.jpg"
+                            alt="Shredders Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2022</span>
+                        <span class="text-xs text-slate-400">Editing</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1874170/Shredders/" target="_blank"
+                            class="hover:text-accent transition-colors">Shredders</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Sports</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> FoamPunch</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            24,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ukraine War Stories (2022) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1985510/Ukraine_War_Stories/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1985510/header.jpg"
+                            alt="Ukraine War Stories Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2022</span>
+                        <span class="text-xs text-slate-400">Editing</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1985510/Ukraine_War_Stories/" target="_blank"
+                            class="hover:text-accent transition-colors">Ukraine War Stories</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Visual Novel (Charity)</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Starni Games</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            26,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tunche (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/887450/Tunche/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/887450/header.jpg" alt="Tunche Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/887450/Tunche/" target="_blank"
+                            class="hover:text-accent transition-colors">Tunche</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Action</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> LEAP Game Studios</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            20,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Midnight Protocol (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1162700/Midnight_Protocol/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1162700/header.jpg"
+                            alt="Midnight Protocol Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1162700/Midnight_Protocol/" target="_blank"
+                            class="hover:text-accent transition-colors">Midnight Protocol</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">RPG / Strategy</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> LuGus Studios</p>
+                        <p><strong>Pub:</strong> Iceberg Interactive</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            69,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- SuchArt (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1293180/SuchArt/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1293180/header.jpg" alt="SuchArt Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1293180/SuchArt/" target="_blank"
+                            class="hover:text-accent transition-colors">SuchArt</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Simulation</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Goose Minded</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            28,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ratchet & Clank: Rift Apart (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1895880/_/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1895880/header.jpg"
+                            alt="Ratchet & Clank Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Submission</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <span class="hover:text-accent transition-colors cursor-default">Ratchet & Clank: Rift
+                            Apart</span>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Action / Adventure</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Insomniac Games</p>
+                        <p><strong>Pub:</strong> Sony Interactive Entertainment</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Role:
+                            Translation
+                            (stage directions)</p>
+                    </div>
+                </div>
+
+                <!-- Tails Noir (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/865610/Tails_Noir/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/865610/header.jpg"
+                            alt="Tails Noir Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Subcontract</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/865610/Tails_Noir/" target="_blank"
+                            class="hover:text-accent transition-colors">Tails Noir</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Adventure</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Eggnut</p>
+                        <p><strong>Pub:</strong> Raw Fury</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            31,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Breathedge (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/738520/Breathedge/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/738520/header.jpg"
+                            alt="Breathedge Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Full Scope</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/738520/Breathedge/" target="_blank"
+                            class="hover:text-accent transition-colors">Breathedge</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Adventure / Survival</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> RedRuins Softworks</p>
+                        <p><strong>Pub:</strong> HypeTrain Digital</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            72,000*</p>
+                    </div>
+                </div>
+
+                <!-- Grow: Song of the Evertree (2021) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1380420/Grow_Song_of_the_Evertree/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1380420/header.jpg" alt="Grow Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2021</span>
+                        <span class="text-xs text-slate-400">Subcontract</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1380420/Grow_Song_of_the_Evertree/" target="_blank"
+                            class="hover:text-accent transition-colors">Grow: Song of the Evertree</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">RPG / Simulation</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Prideful Sloth</p>
+                        <p><strong>Pub:</strong> 505 Games</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            23,000
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Partisans 1941 (2020) -->
+                <div
+                    class="bg-slate-900 rounded-xl shadow-sm p-4 border border-slate-800 card-interaction h-full flex flex-col">
+                    <a href="https://store.steampowered.com/app/1227530/1941__Partisans_1941/" target="_blank"
+                        class="block mb-4 overflow-hidden rounded-lg group">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/1227530/header.jpg"
+                            alt="Partisans 1941 Banner"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    </a>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2 py-1 text-xs font-semibold bg-slate-800 text-slate-300 rounded-md">2020</span>
+                        <span class="text-xs text-slate-400">Translation</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2 text-white leading-tight">
+                        <a href="https://store.steampowered.com/app/1227530/1941__Partisans_1941/" target="_blank"
+                            class="hover:text-accent transition-colors">Partisans 1941</a>
+                    </h4>
+                    <p class="text-sm text-slate-400 mb-3 font-medium">Strategy / Tactics</p>
+                    <div class="space-y-1 text-sm text-slate-400">
+                        <p><strong>Dev:</strong> Alter Games</p>
+                        <p><strong>Pub:</strong> Daedalic Entertainment</p>
+                        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-800 font-mono">Word Count:
+                            20,000
+                        </p>
+                    </div>
+                </div>
+
+
+
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-2xl font-bold mb-4">Contact</h2>
-                <div class="space-y-4">
-                    <!-- 連絡先情報はここに追加してください -->
-                    <p class="text-gray-700">
-                        <strong>Email:</strong> <a href="mailto:your-email@example.com" class="text-blue-600 hover:text-blue-800">your-email@example.com</a>
+        <section id="contact" class="max-w-2xl mx-auto mb-20">
+            <div
+                class="bg-slate-900 rounded-2xl shadow-xl p-8 sm:p-12 text-center text-white border border-slate-800 relative overflow-hidden">
+                <!-- Decorative background elements (adjusted for dark theme) -->
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-accent opacity-10 rounded-full blur-3xl">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 -mb-10 -ml-10 w-32 h-32 bg-blue-400 opacity-10 rounded-full blur-3xl">
+                </div>
+
+                <h2 class="text-3xl font-bold mb-6 relative z-10">Get in Touch</h2>
+                <div class="space-y-6 relative z-10">
+                    <p class="text-slate-400">
+                        お仕事のご依頼、ご相談などお気軽にご連絡ください。
                     </p>
-                    <p class="text-gray-700">
-                        <strong>Note:</strong> <a href="https://note.com/clamm0363" target="_blank" class="text-blue-600 hover:text-blue-800">https://note.com/clamm0363</a>
-                    </p>
-                    <!-- 他のSNSリンクなども追加可能 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-lg mx-auto">
+                        <!-- X (Twitter) -->
+                        <a href="https://x.com/clamm0363" target="_blank"
+                            class="group flex items-center justify-center px-6 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-black hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <svg class="w-5 h-5 mr-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                            X / Twitter
+                        </a>
+
+                        <!-- Discord -->
+                        <a href="https://t.co/r6Sf8TaC2D" target="_blank"
+                            class="group flex items-center justify-center px-6 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-[#5865F2] hover:bg-[#4752c4] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <svg class="w-6 h-6 mr-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 00.0321-.0651c3.9254 1.793 8.18 1.793 12.0614 0a.0739.0739 0 00.0322.0651c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0551c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z" />
+                            </svg>
+                            Discord
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/masarufunahashi/" target="_blank"
+                            class="group flex items-center justify-center px-6 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-[#0077b5] hover:bg-[#006396] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <svg class="w-5 h-5 mr-3 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                            LinkedIn
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:masaru.funahashi@clamm-translation.net"
+                            class="group flex items-center justify-center px-6 py-4 border border-slate-700 text-base font-bold rounded-xl text-slate-200 bg-slate-800 hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Email
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
-    </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p>&copy; 2025 Masaru Funahashi. All rights reserved.</p>
-        </div>
-    </footer>
+        <!-- Footer -->
+        <footer class="bg-slate-900 border-t border-slate-800 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+                <p class="text-slate-500 text-sm">&copy; 2025 Masaru Funahashi. All rights reserved.</p>
+            </div>
+        </footer>
 </body>
+
 </html>
