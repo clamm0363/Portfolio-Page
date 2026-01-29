@@ -22,3 +22,16 @@ npm-debug.log*
 
 # Umami database (if mounted locally)
 umami-data/
+
+# Private documentation and scripts (keep locally only)
+*_TROUBLESHOOTING.md
+*_SETUP*.md
+*_DEPLOY.md
+*_STEPS.md
+CLOUDFLARE_*.md
+PORTAINER_*.md
+UMAMI_*.md
+DEPLOYMENT_*.md
+QUICK_START.md
+commit-push-and-deploy.ps1
+deploy-portfolio.ps1
