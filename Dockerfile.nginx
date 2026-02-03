@@ -1,8 +1,0 @@
-FROM nginx:alpine
-
-# 静的ファイルをイメージにコピー
-COPY index.html /usr/share/nginx/html/
-COPY assets /usr/share/nginx/html/assets/
-
-# nginxをフォアグラウンドで実行
-CMD ["nginx", "-g", "daemon off;"]
