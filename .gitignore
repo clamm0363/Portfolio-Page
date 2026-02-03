@@ -26,16 +26,18 @@ npm-debug.log*
 # Umami database (if mounted locally)
 umami-data/
 
-# Private documentation and scripts (keep locally only)
+# Private documentation (keep locally only)
 *_TROUBLESHOOTING.md
 *_SETUP*.md
 *_DEPLOY.md
 *_STEPS.md
 CLOUDFLARE_*.md
-PORTAINER_*.md
 UMAMI_*.md
 DEPLOYMENT_COMPLETE.md
 DEPLOY_FROM_CURSOR.md
 QUICK_START.md
 commit-push-and-deploy.ps1
-deploy-portfolio.ps1
+
+# Portainer Stack export (contains passwords and tokens)
+portfolio-site-new.yml
+*.yml.backup

@@ -213,6 +213,146 @@ docker service logs portfolio_cloudflared
    <script async src="http://<ノードIP>:3002/script.js" data-website-id="your-website-id"></script>
    ```
 
+## サイトの更新方法（日常運用）
+
+サイトのコンテンツを更新する方法は、更新内容に応じて以下の2つがあります。
+
+### 方法A: Cursorからの更新（Portainer API連携）- 推奨
+
+**用途:** `docker-compose.yml`、環境変数、Dockerイメージなどの設定変更を含む更新
+
+#### 前提条件
+
+Portainer API トークンを取得済みであること（詳細は [DEPLOYMENT.md](./DEPLOYMENT.md#portainer-apiトークンの取得) を参照）
+
+#### 更新手順
+
+1. **Cursorでファイルを編集**
+   ```
+   - index.html やその他のファイルを編集
+   - docker-compose.yml の変更も可能
+   ```
+
+2. **Git commit & push**
+   ```bash
+   git add .
+   git commit -m "Update: サイト内容の更新"
+   git push origin main
+   ```
+
+3. **自動デプロイスクリプトを実行**
+   ```powershell
+   # Cursor ターミナル（PowerShell）で
+   .\deploy-portfolio.ps1
+   ```
+   
+   スクリプトは `.env` ファイルから以下を自動読み取り：
+   - `PORTAINER_API_TOKEN`: Portainer APIトークン
+   - `PORTAINER_URL`: Portainer URL（デフォルト: https://192.168.0.94:9443）
+   - `TUNNEL_TOKEN`: Cloudflare Tunnel トークン
+   - `POSTGRES_PASSWORD`: データベースパスワード
+   - `UMAMI_HASH_SALT`: Umami ハッシュソルト
+
+4. **デプロイ確認**
+   - スクリプトが成功メッセージを表示
+   - 2-3分後にサイトが更新されます
+
+#### 更新フロー図
+
+```
+┌─────────────┐
+│   Cursor    │ ファイル編集
+│  (ローカル)  │
+└──────┬──────┘
+       │ git commit & push
+       ↓
+┌─────────────┐
+│   GitHub    │ リポジトリに反映
+└──────┬──────┘
+       │
+       │ .\deploy-portfolio.ps1
+       ↓
+┌─────────────┐
+│  Portainer  │ APIでStack再作成
+│     API     │
+└──────┬──────┘
+       │
+       ↓
+┌─────────────┐
+│Docker Swarm │ サービス更新
+│   Cluster   │
+└──────┬──────┘
+       │
+       ↓
+┌─────────────┐
+│   CephFS    │ 静的ファイル読込
+│   Storage   │
+└─────────────┘
+```
+
+### 方法B: 静的ファイルのみ更新する場合
+
+**用途:** `index.html`、CSS、画像などの静的ファイルのみの更新
+
+#### 前提条件
+
+- SSH経由でSwarmマネージャーノードにアクセス可能
+
+#### 更新手順
+
+```bash
+# 1. CephFS上のファイルを直接更新
+sudo cp index.html /mnt/cephfs/portfolio/html/
+sudo cp -r assets/* /mnt/cephfs/portfolio/html/assets/
+
+# 2. Nginxサービスを再起動（キャッシュクリア）
+docker service update --force portfolio_nginx
+
+# 3. 更新確認
+docker service ps portfolio_nginx
+```
+
+**メリット:**
+- Git commitやPortainerを経由しない
+- 即座に反映される（数秒）
+
+**デメリット:**
+- Gitリポジトリとの同期が必要
+- 手動でSSH接続が必要
+
+### どちらの方法を選ぶべきか？
+
+| 更新内容 | 推奨方法 | 理由 |
+|---------|---------|------|
+| HTMLやCSSの小さな修正 | 方法B（静的ファイル更新） | 即座に反映、簡単 |
+| 大きなコンテンツ変更 | 方法A（Cursor連携） | Git管理、自動化 |
+| docker-compose.yml変更 | 方法A（Cursor連携） | Stack全体の再デプロイが必要 |
+| 環境変数の変更 | 方法A（Cursor連携） | 環境変数の再設定が必要 |
+| 新しいサービス追加 | 方法A（Cursor連携） | Stack構成の変更が必要 |
+
+### トラブルシューティング
+
+#### デプロイスクリプトが失敗する
+
+```powershell
+# エラー: API Token is required
+```
+
+**解決方法:**
+1. `.env` ファイルが存在するか確認
+2. `PORTAINER_API_TOKEN` が設定されているか確認
+3. トークンが有効か確認（Portainer UI → My account → API keys）
+
+#### 静的ファイルが更新されない
+
+```bash
+# Nginxのログを確認
+docker service logs portfolio_nginx
+
+# キャッシュを完全クリア
+docker service update --force portfolio_nginx
+```
+
 ## 運用管理
 
 ### サービスのスケーリング

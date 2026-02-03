@@ -8,10 +8,11 @@
 2. [インフラ構築](#インフラ構築)
 3. [初回セットアップ](#初回セットアップ)
 4. [Stack デプロイ](#stack-デプロイ)
-5. [Cloudflare Tunnel 設定](#cloudflare-tunnel-設定)
-6. [運用管理](#運用管理)
-7. [トラブルシューティング](#トラブルシューティング)
-8. [バックアップとリカバリ](#バックアップとリカバリ)
+5. [Portainer経由でのデプロイ（Cursor連携）](#portainer経由でのデプロイcursor連携)
+6. [Cloudflare Tunnel 設定](#cloudflare-tunnel-設定)
+7. [運用管理](#運用管理)
+8. [トラブルシューティング](#トラブルシューティング)
+9. [バックアップとリカバリ](#バックアップとリカバリ)
 
 ## 前提条件
 
@@ -275,6 +276,177 @@ curl http://<任意のノードIP>:3002
 ブラウザでアクセス：
 - ポートフォリオサイト: `http://<ノードIP>:8001`
 - Umami 管理画面: `http://<ノードIP>:3002`
+
+## Portainer経由でのデプロイ（Cursor連携）
+
+Portainerを使用すると、Cursorから直接デプロイを自動化できます。これにより、コードを更新するたびに手動でSSH接続してコマンドを実行する必要がなくなります。
+
+### 前提条件
+
+- Portainerがインストール済みであること
+- Portainerが Swarm クラスタに接続されていること
+- GitHubリポジトリがPortainerからアクセス可能であること（パブリックまたはPAT認証）
+
+### 方法A: Portainer API経由（推奨 - 完全自動化）
+
+#### 1. Portainer APIトークンの取得
+
+1. **Portainer UIにログイン**
+   - ブラウザで Portainer にアクセス（例: `http://192.168.0.95:9000`）
+
+2. **API keyを作成**
+   - 右上のユーザーアイコンをクリック
+   - **My account** を選択
+   - **API keys** セクションまでスクロール
+   - **+ Add API key** をクリック
+   - Description: `Cursor Deployment` と入力
+   - **Add API key** をクリック
+   - 表示されたトークンをコピー（`ptr_` で始まる文字列）
+
+3. **.env ファイルに設定**
+   ```bash
+   # .env ファイルに追記
+   PORTAINER_API_TOKEN=ptr_your_copied_token_here
+   PORTAINER_URL=http://192.168.0.95:9000
+   ```
+
+#### 2. Cursorからデプロイ
+
+1. **ファイルを編集**
+   - Cursorで `index.html` やその他のファイルを編集
+
+2. **Git commit & push**
+   ```bash
+   git add .
+   git commit -m "Update: サイト内容の更新"
+   git push origin main
+   ```
+
+3. **PowerShellで自動デプロイ**
+   ```powershell
+   # Cursor のターミナル（PowerShell）で実行
+   .\deploy-portfolio.ps1
+   ```
+   
+   スクリプトは `.env` から自動的にAPIトークンと環境変数を読み取ります。
+
+4. **デプロイ確認**
+   - スクリプトの出力でデプロイステータスを確認
+   - または Portainer UI で確認
+
+#### 3. 更新フロー（日常的な運用）
+
+```
+1. Cursor: ファイルを編集（index.html など）
+2. Cursor: git commit & push
+3. Cursor ターミナル: .\deploy-portfolio.ps1
+   ↓
+完了！サイトが自動更新されます（2-3分）
+```
+
+### 方法B: Portainer UI経由（手動）
+
+Portainer UIから手動でデプロイする場合：
+
+#### 初回Stack作成
+
+1. **Portainer UIにアクセス**
+   - ブラウザで `http://192.168.0.95:9000` を開く
+
+2. **Stacksページへ移動**
+   - 左メニューから **Stacks** を選択
+   - **+ Add stack** ボタンをクリック
+
+3. **Git Repository設定**
+   - **Build method**: **Repository** を選択
+   - **Repository URL**: `https://github.com/clamm0363/Portfolio-Page`
+   - **Repository reference**: `refs/heads/main`
+   - **Compose path**: `docker-compose.yml`
+   - **Authentication**: プライベートリポジトリの場合のみチェック
+
+4. **環境変数を設定**
+   - **Environment variables** セクションで以下を追加：
+   ```
+   TUNNEL_TOKEN=your-cloudflare-tunnel-token
+   POSTGRES_DB=umami
+   POSTGRES_USER=umami
+   POSTGRES_PASSWORD=your-strong-password
+   UMAMI_HASH_SALT=your-64-char-hex-string
+   ```
+
+5. **Stackをデプロイ**
+   - Stack name: `portfolio`
+   - **Deploy the stack** ボタンをクリック
+
+#### 既存Stackの更新
+
+1. **Stacks** ページで `portfolio` Stackを選択
+2. **Pull and redeploy** ボタンをクリック
+   - GitHubから最新のコードを取得して再デプロイされます
+
+### トラブルシューティング（Portainerデプロイ）
+
+#### APIトークンエラー
+
+```powershell
+# エラー: API Token is required
+```
+
+**解決方法:**
+- `.env` ファイルに `PORTAINER_API_TOKEN` が設定されているか確認
+- トークンが有効か確認（Portainer UI → My account → API keys）
+
+#### 環境変数エラー
+
+```powershell
+# エラー: Missing required environment variables
+```
+
+**解決方法:**
+- `.env` ファイルに以下が設定されているか確認：
+  - `TUNNEL_TOKEN`
+  - `POSTGRES_PASSWORD`
+  - `UMAMI_HASH_SALT`
+
+#### Stack作成失敗
+
+```
+# エラー: Stack creation failed
+```
+
+**解決方法:**
+1. Portainer UIで Stack の詳細を確認
+2. GitHubリポジトリがアクセス可能か確認
+3. `docker-compose.yml` の構文エラーをチェック
+4. `public` ネットワークが存在するか確認：
+   ```bash
+   docker network ls | grep public
+   ```
+
+#### Swarm関連エラー
+
+```
+# エラー: Endpoint not found or not a Swarm manager
+```
+
+**解決方法:**
+1. Docker Swarm が初期化されているか確認：
+   ```bash
+   docker node ls
+   ```
+2. Portainer が正しいエンドポイントに接続されているか確認
+
+### セキュリティ上の注意
+
+1. **APIトークンの管理**
+   - `.env` ファイルは絶対にGitにコミットしない（`.gitignore`で除外済み）
+   - APIトークンを定期的にローテーション
+   - 不要になったトークンは削除
+
+2. **Portainer UIのセキュリティ**
+   - 強力な管理者パスワードを使用
+   - 可能であればPortainerをVPN経由でのみアクセス可能にする
+   - SSL証明書を正式なものに変更（自己署名証明書を使用している場合）
 
 ## Cloudflare Tunnel 設定
 
