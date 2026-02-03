@@ -34,7 +34,6 @@ umami-data/
 CLOUDFLARE_*.md
 UMAMI_*.md
 DEPLOYMENT_COMPLETE.md
-DEPLOY_FROM_CURSOR.md
 QUICK_START.md
 commit-push-and-deploy.ps1
 
