@@ -9,10 +9,31 @@ services:
       - target: 80
         published: 8001
         mode: ingress
-    volumes:
-      - /mnt/cephfs/portfolio/html/index.html:/usr/share/nginx/html/index.html:ro
-      - /mnt/cephfs/portfolio/html/assets:/usr/share/nginx/html/assets:ro
-      - /mnt/cephfs/portfolio/html/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        # Install git
+        apk add --no-cache git
+        
+        # Clone repository
+        echo "Cloning repository..."
+        git clone --depth 1 --branch main https://github.com/clamm0363/Portfolio-Page.git /tmp/repo
+        
+        # Copy files to nginx document root
+        echo "Copying files..."
+        cp /tmp/repo/index.html /usr/share/nginx/html/
+        cp -r /tmp/repo/assets /usr/share/nginx/html/ 2>/dev/null || true
+        
+        # Copy nginx config
+        cp /tmp/repo/nginx/nginx.conf /etc/nginx/nginx.conf
+        
+        # Cleanup
+        rm -rf /tmp/repo
+        
+        echo "Starting nginx..."
+        # Start nginx in foreground
+        exec nginx -g 'daemon off;'
     depends_on:
       - umami
     deploy:
