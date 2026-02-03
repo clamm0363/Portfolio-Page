@@ -1,9 +1,6 @@
-# Environment variables
+# Environment variables (sensitive information)
 .env
 .env.local
-
-# Docker volumes
-docker-volumes/
 
 # OS files
 .DS_Store
@@ -22,9 +19,6 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-
-# Umami database (if mounted locally)
-umami-data/
 
 # Private documentation (keep locally only)
 *_TROUBLESHOOTING.md

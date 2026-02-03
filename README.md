@@ -248,7 +248,7 @@ Portainer API トークンを取得済みであること（詳細は [DEPLOYMENT
    
    スクリプトは `.env` ファイルから以下を自動読み取り：
    - `PORTAINER_API_TOKEN`: Portainer APIトークン
-   - `PORTAINER_URL`: Portainer URL（デフォルト: https://192.168.0.94:9443）
+   - `PORTAINER_URL`: Portainer URL（デフォルト: http://192.168.0.95:9000）
    - `TUNNEL_TOKEN`: Cloudflare Tunnel トークン
    - `POSTGRES_PASSWORD`: データベースパスワード
    - `UMAMI_HASH_SALT`: Umami ハッシュソルト
