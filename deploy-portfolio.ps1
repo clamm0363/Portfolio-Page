@@ -9,7 +9,7 @@ param(
     [string]$PortainerUrl,
     
     [Parameter(Mandatory=$false)]
-    [string]$StackName = "portfolio",
+    [string]$StackName = "portfolio-site",
     
     [Parameter(Mandatory=$false)]
     [string]$RepoUrl = "https://github.com/clamm0363/Portfolio-Page",
@@ -17,6 +17,10 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$Branch = "main"
 )
+
+# Fix for Japanese text encoding (prevents garbled characters)
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Colors for output
 $Green = "`e[32m"
@@ -158,22 +162,50 @@ try {
     $endpointId = $endpoints[0].Id
     Write-Success "Endpoint ID: $endpointId"
 
-    # 2. 既存のスタックを確認
-    Write-Info "Checking for existing stack '$StackName'..."
+    # 2. 既存のスタックを確認とSwarm ID取得
+    Write-Info "Checking for existing stacks..."
     if ($PSVersionTable.PSVersion.Major -ge 7) {
         $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers -SkipCertificateCheck
     } else {
         $stacks = Invoke-RestMethod -Uri "$PortainerUrl/api/stacks" -Headers $headers
     }
     
+    # Swarm IDを既存のSwarm Stackから取得
+    $swarmId = ""
+    $swarmStack = $stacks | Where-Object { $_.Type -eq 1 -and $_.SwarmId } | Select-Object -First 1
+    if ($swarmStack) {
+        $swarmId = $swarmStack.SwarmId
+        Write-Success "Swarm ID obtained: $swarmId"
+    } else {
+        Write-Error-Custom "No existing Swarm stack found to get Swarm ID"
+        Write-Info "Please create at least one Swarm stack manually first, or check Docker Swarm status"
+        exit 1
+    }
+    
+    # 旧スタック portfolio-site-new を自動削除（ポート競合回避）
+    $oldStack = $stacks | Where-Object { $_.Name -eq "portfolio-site-new" }
+    if ($oldStack) {
+        Write-Info "Found old stack 'portfolio-site-new' (ID: $($oldStack.Id)). Removing to avoid port conflict..."
+        $deleteUrl = "$PortainerUrl/api/stacks/$($oldStack.Id)?endpointId=$endpointId"
+        if ($PSVersionTable.PSVersion.Major -ge 7) {
+            Invoke-RestMethod -Uri $deleteUrl -Method Delete -Headers $headers -SkipCertificateCheck | Out-Null
+        } else {
+            Invoke-RestMethod -Uri $deleteUrl -Method Delete -Headers $headers | Out-Null
+        }
+        Write-Success "Old stack 'portfolio-site-new' deleted"
+        Write-Info "Waiting for port 8001 to be released..."
+        Start-Sleep -Seconds 10
+    }
+    
     $existingStack = $stacks | Where-Object { $_.Name -eq $StackName }
     
     if ($existingStack) {
         Write-Info "Stack '$StackName' already exists. Deleting..."
+        $deleteUrl = "$PortainerUrl/api/stacks/$($existingStack.Id)?endpointId=$endpointId"
         if ($PSVersionTable.PSVersion.Major -ge 7) {
-            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers -SkipCertificateCheck | Out-Null
+            Invoke-RestMethod -Uri $deleteUrl -Method Delete -Headers $headers -SkipCertificateCheck | Out-Null
         } else {
-            Invoke-RestMethod -Uri "$PortainerUrl/api/stacks/$($existingStack.Id)" -Method Delete -Headers $headers | Out-Null
+            Invoke-RestMethod -Uri $deleteUrl -Method Delete -Headers $headers | Out-Null
         }
         Write-Success "Existing stack deleted"
         Write-Info "Waiting for cleanup..."
@@ -215,18 +247,20 @@ try {
     # 4. 新しいStackを作成（Swarm Stack用）
     Write-Info "Creating new Swarm Stack '$StackName'..."
     $body = @{
-        name = $StackName
-        repositoryURL = $RepoUrl
-        repositoryReferenceName = "refs/heads/$Branch"
-        composeFile = "docker-compose.yml"
-        env = $portainerEnvVars
-        # Swarm用の追加設定
-        swarmID = ""
+        Name = $StackName
+        RepositoryURL = $RepoUrl
+        RepositoryReferenceName = "refs/heads/$Branch"
+        ComposeFile = "docker-compose.yml"
+        Env = $portainerEnvVars
+        SwarmID = $swarmId
     } | ConvertTo-Json -Depth 10
 
+    # Portainer 2.x系の新しいエンドポイントを使用
+    $apiUrl = "$PortainerUrl/api/stacks/create/swarm/repository?endpointId=$endpointId"
+    
     if ($PSVersionTable.PSVersion.Major -ge 7) {
         $response = Invoke-RestMethod `
-            -Uri "$PortainerUrl/api/stacks?type=2&method=repository&endpointId=$endpointId" `
+            -Uri $apiUrl `
             -Method Post `
             -Headers $headers `
             -ContentType "application/json" `
@@ -234,7 +268,7 @@ try {
             -SkipCertificateCheck
     } else {
         $response = Invoke-RestMethod `
-            -Uri "$PortainerUrl/api/stacks?type=2&method=repository&endpointId=$endpointId" `
+            -Uri $apiUrl `
             -Method Post `
             -Headers $headers `
             -ContentType "application/json" `
