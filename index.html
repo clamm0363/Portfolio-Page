@@ -36,6 +36,11 @@
         }
     </script>
     <style>
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
         .glass-header {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(12px);
@@ -93,7 +98,7 @@
         data-website-id="f3d0545f-28a0-4199-ad16-00b6deb19710"></script>
 </head>
 
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-accent selection:text-white">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-accent selection:text-white overflow-x-hidden">
     <!-- Header -->
     <header class="fixed w-full top-0 z-50 glass-header">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-3">
@@ -119,16 +124,18 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-20">
         <!-- Introduction Section (Hero) -->
-        <section id="about" class="mb-12 sm:mb-16 relative max-w-4xl mx-auto text-center overflow-visible">
+        <section id="about" class="mb-12 sm:mb-16 relative max-w-4xl mx-auto text-center overflow-hidden">
             <!-- Animated Background Blobs -->
-            <div
-                class="absolute top-0 -left-4 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob">
-            </div>
-            <div
-                class="absolute top-0 -right-4 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000">
-            </div>
-            <div
-                class="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+            <div class="absolute inset-0 overflow-hidden pointer-events-none -z-0">
+                <div
+                    class="absolute top-0 -left-4 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob">
+                </div>
+                <div
+                    class="absolute top-0 -right-4 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+                </div>
+                <div
+                    class="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-blob animation-delay-4000">
+                </div>
             </div>
 
             <div class="relative z-10 fade-in py-6 sm:py-8">
