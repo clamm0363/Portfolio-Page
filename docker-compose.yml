@@ -1,3 +1,7 @@
+# HISTORICAL full-stack manifest, not the daily deployment entry point.
+# Live deployments may contain adjustments outside this historical manifest.
+# Do not run stack deploy / Portainer Pull and redeploy from this file until a
+# separately reviewed full-stack reconciliation has been prepared. See DEPLOYMENT.md.
 version: '3.8'
 
 services:

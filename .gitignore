@@ -1,6 +1,7 @@
 # Environment variables (sensitive information)
 .env
 .env.local
+.local/
 
 # OS files
 .DS_Store
